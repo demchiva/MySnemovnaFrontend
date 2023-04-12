@@ -1,6 +1,6 @@
 # snemovna
 
-MySnemovnaFrontend
+A new Flutter project.
 
 ## Getting Started
 
