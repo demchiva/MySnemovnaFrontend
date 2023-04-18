@@ -30,7 +30,7 @@ linter:
     control_flow_in_finally: true
     diagnostic_describe_all_properties: false
     empty_statements: true
-    hash_and_equals: true
+    hash_and_equals: false
     iterable_contains_unrelated_type: true
     list_remove_unrelated_type: true
     literal_only_boolean_expressions: true

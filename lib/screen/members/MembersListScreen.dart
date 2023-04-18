@@ -1,11 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snemovna/bloc/members/MemberBloc.dart';
 import 'package:snemovna/bloc/members/MemberEvent.dart';
 import 'package:snemovna/bloc/members/MemberState.dart';
-import 'package:snemovna/model/members/Member.dart';
-import 'package:snemovna/navigation/Navigation.dart';
 import 'package:snemovna/repository/members/MemberRemoteRepository.dart';
 import 'package:snemovna/screen/members/MemberCard.dart';
 import 'package:snemovna/utils/BaseTools.dart';

@@ -3,11 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snemovna/bloc/meetings/MeetingBloc.dart';
 import 'package:snemovna/bloc/meetings/MeetingEvent.dart';
 import 'package:snemovna/bloc/meetings/MeetingState.dart';
-import 'package:snemovna/model/meetings/Meeting.dart';
-import 'package:snemovna/navigation/Navigation.dart';
 import 'package:snemovna/repository/meetings/MeetingsRemoteRepository.dart';
 import 'package:snemovna/screen/meetings/MeetingCard.dart';
-import 'package:snemovna/service/MeetingService.dart';
 import 'package:snemovna/utils/BaseTools.dart';
 
 class MeetingsListScreen extends StatefulWidget {

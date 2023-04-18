@@ -227,53 +227,6 @@ class _VoteDetailScreenState extends State<VoteDetailScreen> {
         ),
       );
 
-  // Widget _buildItemCard(final VoteMembers member) {
-  //   final VoteResult result = getMemberVoteResult(member.result);
-  //   return Padding(
-  //     padding: EdgeInsets.all(setWidth(8)),
-  //     child: Card(
-  //       shape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.circular(5),
-  //       ),
-  //       elevation: 5,
-  //       child: ListTile(
-  //         onTap: () {
-  //           Navigation.me.memberDetail(context, member.memberId);
-  //         },
-  //         leading: CachedNetworkImage(
-  //           imageUrl: member.photoUrl,
-  //           height: setHeight(100),
-  //           width: setWidth(50),
-  //           errorWidget: (final context, final url, final error) =>
-  //               const Center(
-  //             child: Icon(Icons.account_circle),
-  //           ),
-  //         ),
-  //         title: Text(
-  //           style: TextStyle(
-  //             fontWeight: FontWeight.w600,
-  //             fontSize: setSp(14),
-  //           ),
-  //           member.name,
-  //         ),
-  //         subtitle: Padding(
-  //           padding: EdgeInsets.symmetric(vertical: setHeight(5)),
-  //           child:
-  //               Text(style: TextStyle(fontSize: setSp(12)), member.partyName),
-  //         ),
-  //         trailing: Container(
-  //           width: setWidth(100),
-  //           color: result.color,
-  //           child: Padding(
-  //             padding: EdgeInsets.all(setWidth(8)),
-  //             child: Center(child: Text(result.text)),
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-  //
   Widget _buildTextWithDescription(
     final String text,
     final String description,

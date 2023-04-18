@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:snemovna/model/members/Member.dart';
@@ -43,7 +42,11 @@ void main() {
   testWidgets('should display member vote details',
       (final WidgetTester tester) async {
     final memberVote = MemberVotes(
-        name: 'John Doe', date: '2022-01-01', result: '', voteId: 1);
+      name: 'John Doe',
+      date: '2022-01-01',
+      result: '',
+      voteId: 1,
+    );
 
     await tester.pumpWidget(
       MaterialApp(

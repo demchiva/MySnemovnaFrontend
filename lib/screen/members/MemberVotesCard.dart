@@ -13,7 +13,7 @@ class MemberVotesCard extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     ScreenUtil.init(context);
-    VoteResult result = getMemberVoteResult(memberVote.result);
+    final VoteResult result = getMemberVoteResult(memberVote.result);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: setWidth(8)),

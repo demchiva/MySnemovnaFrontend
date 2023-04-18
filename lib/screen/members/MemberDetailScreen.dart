@@ -6,10 +6,8 @@ import 'package:snemovna/bloc/members/MemberEvent.dart';
 import 'package:snemovna/bloc/members/MemberState.dart';
 import 'package:snemovna/model/members/MemberDetail.dart';
 import 'package:snemovna/model/members/MemberVotes.dart';
-import 'package:snemovna/navigation/Navigation.dart';
 import 'package:snemovna/repository/members/MemberRemoteRepository.dart';
 import 'package:snemovna/screen/members/MemberVotesCard.dart';
-import 'package:snemovna/service/VotesResultService.dart';
 import 'package:snemovna/utils/BaseTools.dart';
 import 'package:snemovna/utils/UrlUtils.dart';
 
@@ -102,7 +100,9 @@ class _MemberDetailScreenState extends State<MemberDetailScreen> {
                   ),
                 Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: setWidth(10), vertical: setWidth(8)),
+                    horizontal: setWidth(10),
+                    vertical: setWidth(8),
+                  ),
                   child: Column(
                     children: [
                       _personalInfoToggle(),
