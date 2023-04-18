@@ -6,6 +6,8 @@ import 'package:snemovna/bloc/members/MemberEvent.dart';
 import 'package:snemovna/bloc/members/MemberState.dart';
 import 'package:snemovna/model/members/Member.dart';
 import 'package:snemovna/navigation/Navigation.dart';
+import 'package:snemovna/repository/members/MemberRemoteRepository.dart';
+import 'package:snemovna/screen/members/MemberCard.dart';
 import 'package:snemovna/utils/BaseTools.dart';
 
 class MembersListScreen extends StatefulWidget {
@@ -18,7 +20,10 @@ class MembersListScreen extends StatefulWidget {
 class _MembersListScreenState extends State<MembersListScreen> {
   final ScrollController _controller = ScrollController();
   final TextEditingController _searchController = TextEditingController();
-  final MemberBloc _memberBloc = MemberBloc(MembersFirstLoading());
+  final MemberBloc _memberBloc = MemberBloc(
+    MembersFirstLoading(),
+    dataProvider: MemberRemoteRepository(),
+  );
   int pageNumber = 0;
   bool hasReachedMax = false;
 
@@ -130,74 +135,7 @@ class _MembersListScreenState extends State<MembersListScreen> {
                     child: CircularProgressIndicator(),
                   ),
                 )
-              : _buildItemCard(state.members[index]),
+              : MemberCard(member: state.members[index]),
     );
   }
-
-  Widget _buildItemCard(final Member member) => GestureDetector(
-        onTap: () {
-          Navigation.me.memberDetail(context, member.memberId);
-        },
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
-          elevation: 5,
-          child: ListTile(
-            // leading: Image.network(member.photo),
-            leading: CachedNetworkImage(
-              imageUrl: member.photo,
-              height: setHeight(100),
-              width: setWidth(50),
-              errorWidget: (final context, final url, final error) =>
-                  const Center(
-                child: Icon(
-                  Icons.account_circle,
-                  size: 50,
-                ),
-              ),
-            ),
-            visualDensity: const VisualDensity(
-              vertical: 3,
-              horizontal: 3,
-            ),
-            isThreeLine: true,
-            title: Text(
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: setSp(14),
-              ),
-              member.name,
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  style: TextStyle(fontSize: setSp(12)),
-                  member.party!,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: setHeight(5)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        style: TextStyle(fontSize: setSp(10)),
-                        member.region,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: setWidth(5)),
-                        child: Text(
-                          style: TextStyle(fontSize: setSp(10)),
-                          '${member.dateFrom} - ${member.dateTo ?? '...'}',
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      );
 }

@@ -14,10 +14,10 @@ class MeetingBloc extends Bloc<MeetingEvent, MeetingState> {
 
   static final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
-  MeetingRemoteRepository dataProvider = MeetingRemoteRepository();
+  MeetingRemoteRepository dataProvider;
   final List<Meeting> _loadedMeetings = [];
 
-  MeetingBloc(super.initialState) {
+  MeetingBloc(super.initialState, {required this.dataProvider}) {
     on<GetMeetings>((final event, final emit) async {
       if (event.pageNumber == 0) {
         _loadedMeetings.clear();

@@ -5,6 +5,8 @@ import 'package:snemovna/bloc/meetings/MeetingEvent.dart';
 import 'package:snemovna/bloc/meetings/MeetingState.dart';
 import 'package:snemovna/model/meetings/Meeting.dart';
 import 'package:snemovna/model/meetings/MeetingDetail.dart';
+import 'package:snemovna/repository/meetings/MeetingsRemoteRepository.dart';
+import 'package:snemovna/screen/meetings/MeetingPointCard.dart';
 import 'package:snemovna/service/MeetingService.dart';
 import 'package:snemovna/utils/BaseTools.dart';
 
@@ -20,7 +22,10 @@ class MeetingDetailScreen extends StatefulWidget {
 class _MeetingDetailScreenState extends State<MeetingDetailScreen>
     with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  final MeetingBloc _meetingBloc = MeetingBloc(MeetingDetailLoading());
+  final MeetingBloc _meetingBloc = MeetingBloc(
+    MeetingDetailLoading(),
+    dataProvider: MeetingRemoteRepository(),
+  );
 
   late TabController _tabController;
 
@@ -120,45 +125,10 @@ class _MeetingDetailScreenState extends State<MeetingDetailScreen>
         : ListView.builder(
             itemCount: detail.points.length,
             itemBuilder: (final BuildContext context, final int index) =>
-                _buildMeetingPoint(detail.points[index]),
+                MeetingPointCard(
+              tabController: _tabController,
+              point: detail.points[index],
+            ),
           );
   }
-
-  Widget _buildMeetingPoint(final MeetingPoint point) => Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-        ),
-        elevation: 5,
-        child: ListTile(
-          // isThreeLine: true,
-          title: Text(point.name),
-          subtitle: point.type != null ||
-                  (point.state != null && _tabController.index == 1)
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (point.type != null)
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: setHeight(5)),
-                        child: Text(
-                          '${point.type}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    if (point.state != null && _tabController.index == 1)
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: setHeight(5)),
-                        child: SizedBox(
-                          width: setWidth(100),
-                          child: Text(
-                            point.state!,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                  ],
-                )
-              : null,
-        ),
-      );
 }

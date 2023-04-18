@@ -12,10 +12,10 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
   static const int PAGE_SIZE = 100;
   static final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
-  MemberRemoteRepository dataProvider = MemberRemoteRepository();
+  MemberRemoteRepository dataProvider;
   final List<Member> _loadedMembers = [];
 
-  MemberBloc(super.initialState) {
+  MemberBloc(super.initialState, {required this.dataProvider}) {
     on<GetMembers>((final event, final emit) async {
       if (event.pageNumber == 0) {
         _loadedMembers.clear();

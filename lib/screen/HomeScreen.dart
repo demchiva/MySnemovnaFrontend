@@ -48,24 +48,24 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildBottomNavigationBar() => SizedBox(
-        height: setHeight(85),
+        height: setWidth(75),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          iconSize: setHeight(20),
+          iconSize: setHeight(16),
           currentIndex: index,
           onTap: _onTabTapped,
           selectedFontSize: setSp(12),
           items: const [
             BottomNavigationBarItem(
-              label: 'Hlasovani',
+              label: 'Hlasování',
               icon: Icon(Icons.check),
             ),
             BottomNavigationBarItem(
-              label: 'Poslanci',
+              label: 'Poslance',
               icon: Icon(Icons.man),
             ),
             BottomNavigationBarItem(
-              label: 'Schuze',
+              label: 'Schůze',
               icon: Icon(Icons.meeting_room),
             ),
           ],

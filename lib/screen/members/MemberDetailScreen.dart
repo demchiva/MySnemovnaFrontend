@@ -6,6 +6,9 @@ import 'package:snemovna/bloc/members/MemberEvent.dart';
 import 'package:snemovna/bloc/members/MemberState.dart';
 import 'package:snemovna/model/members/MemberDetail.dart';
 import 'package:snemovna/model/members/MemberVotes.dart';
+import 'package:snemovna/navigation/Navigation.dart';
+import 'package:snemovna/repository/members/MemberRemoteRepository.dart';
+import 'package:snemovna/screen/members/MemberVotesCard.dart';
 import 'package:snemovna/service/VotesResultService.dart';
 import 'package:snemovna/utils/BaseTools.dart';
 import 'package:snemovna/utils/UrlUtils.dart';
@@ -21,7 +24,10 @@ class MemberDetailScreen extends StatefulWidget {
 
 class _MemberDetailScreenState extends State<MemberDetailScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  final MemberBloc _memberBloc = MemberBloc(MembersDetailLoading());
+  final MemberBloc _memberBloc = MemberBloc(
+    MembersDetailLoading(),
+    dataProvider: MemberRemoteRepository(),
+  );
 
   late int _memberId;
   late MemberDetail _memberDetail;
@@ -63,71 +69,80 @@ class _MemberDetailScreenState extends State<MemberDetailScreen> {
         ),
       );
 
-  Widget _buildBody() => Column(
-        children: [
-          SizedBox(
-            width: setWidth(200),
-            height: setWidth(200),
-            child: CachedNetworkImage(
-              imageUrl: _memberDetail.photo,
-              errorWidget: (final context, final url, final error) =>
-                  const Center(
-                child: Icon(
-                  Icons.account_circle,
-                  size: 100,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: setWidth(10)),
-            child: Text(
-              _memberDetail.name,
-              style: TextStyle(fontSize: setSp(18)),
-            ),
-          ),
-          if (_memberDetail.email != null)
-            Padding(
-              padding: EdgeInsets.only(top: setWidth(10)),
-              child: Text(_memberDetail.email!),
-            ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: setWidth(10)),
+  Widget _buildBody() => CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
             child: Column(
               children: [
-                _personalInfoToggle(),
-                ..._getMemberInfoList(),
-                if (_expandPersonalInfo) _buildExternalSystemsLinks(),
-                _buildMemberVotesToggle(),
+                SizedBox(
+                  width: setWidth(200),
+                  height: setWidth(200),
+                  child: CachedNetworkImage(
+                    imageUrl: _memberDetail.photo,
+                    errorWidget: (final context, final url, final error) =>
+                        const Center(
+                      child: Icon(
+                        Icons.account_circle,
+                        size: 100,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: setWidth(10)),
+                  child: Text(
+                    _memberDetail.name,
+                    style: TextStyle(fontSize: setSp(18)),
+                  ),
+                ),
+                if (_memberDetail.email != null)
+                  Padding(
+                    padding: EdgeInsets.only(top: setWidth(10)),
+                    child: Text(_memberDetail.email!),
+                  ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: setWidth(10), vertical: setWidth(8)),
+                  child: Column(
+                    children: [
+                      _personalInfoToggle(),
+                      ..._getMemberInfoList(),
+                      if (_expandPersonalInfo) _buildExternalSystemsLinks(),
+                      _buildMemberVotesToggle(),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
           if (_expandMemberVotes)
             _memberVotes != null
                 ? _memberVotes!.isNotEmpty
-                    ? Expanded(
+                    ? SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (final BuildContext _, final int index) =>
+                              MemberVotesCard(
+                            memberVote: _memberVotes![index],
+                          ),
+                          childCount: _memberVotes!.length,
+                        ),
+                      )
+                    : SliverToBoxAdapter(
                         child: Padding(
-                          padding: EdgeInsets.all(setWidth(8)),
-                          child: ListView.builder(
-                            itemCount: _memberVotes!.length,
-                            itemBuilder:
-                                (final BuildContext _, final int index) =>
-                                    _buildItemCard(_memberVotes![index]),
+                          padding: EdgeInsets.only(top: setHeight(20)),
+                          child: const Center(
+                            child: Text(
+                              'Poslanec nemá evidované výsledky hlasování.',
+                            ),
                           ),
                         ),
                       )
-                    : Padding(
-                        padding: EdgeInsets.only(top: setHeight(20)),
-                        child: const Center(
-                          child: Text(
-                            'Poslanec nemá evidované výsledky hlasování.',
-                          ),
-                        ),
-                      )
-                : Padding(
-                    padding: EdgeInsets.only(top: setHeight(10)),
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                : SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: setHeight(10)),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
                   ),
         ],
@@ -267,29 +282,4 @@ class _MemberDetailScreenState extends State<MemberDetailScreen> {
           ),
         ),
       );
-
-  Widget _buildItemCard(final MemberVotes memberVote) {
-    final VoteResult result = getMemberVoteResult(memberVote.result);
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-      ),
-      elevation: 5,
-      child: ListTile(
-        title: Text(memberVote.name),
-        subtitle: Padding(
-          padding: EdgeInsets.symmetric(vertical: setHeight(5)),
-          child: Text(memberVote.date),
-        ),
-        trailing: Container(
-          width: setWidth(100),
-          color: result.color,
-          child: Padding(
-            padding: EdgeInsets.all(setWidth(8)),
-            child: Center(child: Text(result.text)),
-          ),
-        ),
-      ),
-    );
-  }
 }

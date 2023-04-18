@@ -5,6 +5,8 @@ import 'package:snemovna/bloc/meetings/MeetingEvent.dart';
 import 'package:snemovna/bloc/meetings/MeetingState.dart';
 import 'package:snemovna/model/meetings/Meeting.dart';
 import 'package:snemovna/navigation/Navigation.dart';
+import 'package:snemovna/repository/meetings/MeetingsRemoteRepository.dart';
+import 'package:snemovna/screen/meetings/MeetingCard.dart';
 import 'package:snemovna/service/MeetingService.dart';
 import 'package:snemovna/utils/BaseTools.dart';
 
@@ -17,7 +19,10 @@ class MeetingsListScreen extends StatefulWidget {
 
 class _MeetingsListScreenState extends State<MeetingsListScreen> {
   final _controller = ScrollController();
-  final MeetingBloc _meetingBloc = MeetingBloc(MeetingsFirstLoading());
+  final MeetingBloc _meetingBloc = MeetingBloc(
+    MeetingsFirstLoading(),
+    dataProvider: MeetingRemoteRepository(),
+  );
   int pageNumber = 0;
   bool hasReachedMax = false;
 
@@ -86,68 +91,7 @@ class _MeetingsListScreenState extends State<MeetingsListScreen> {
                     child: CircularProgressIndicator(),
                   ),
                 )
-              : _buildItemCard(state.meetings[index]),
-    );
-  }
-
-  Widget _buildItemCard(final Meeting meeting) {
-    final MeetingStateDisplay state = getMeetingState(meeting);
-    return GestureDetector(
-      onTap: () {
-        Navigation.me.meetingDetail(context, meeting);
-      },
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-        ),
-        elevation: 5,
-        child: ListTile(
-          contentPadding: EdgeInsets.zero,
-          leading: SizedBox(
-            width: setWidth(80),
-            height: setHeight(80),
-            child: Column(
-              children: [
-                Text(
-                  style: TextStyle(fontSize: setSp(16)),
-                  meeting.meetingNumber.toString(),
-                ),
-                Text(style: TextStyle(fontSize: setSp(16)), 'schůze'),
-              ],
-            ),
-          ),
-          isThreeLine: true,
-          title: Text(meeting.date),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: setHeight(2)),
-                child: Text(
-                  style: TextStyle(fontSize: setSp(12)),
-                  meeting.type,
-                ),
-              ),
-              Text(
-                style: TextStyle(fontSize: setSp(12)),
-                meeting.organName,
-              ),
-            ],
-          ),
-          trailing: Padding(
-            padding: EdgeInsets.only(right: setWidth(5)),
-            child: Container(
-              width: setWidth(80),
-              height: setHeight(50),
-              color: state.color,
-              child: Padding(
-                padding: EdgeInsets.all(setWidth(8)),
-                child: Center(child: Text(state.text)),
-              ),
-            ),
-          ),
-        ),
-      ),
+              : MeetingItemCard(state.meetings[index]),
     );
   }
 }

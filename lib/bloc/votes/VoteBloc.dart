@@ -12,10 +12,10 @@ class VoteBloc extends Bloc<VoteEvent, VoteState> {
   static const int PAGE_SIZE = 100;
   static final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
-  VoteRemoteRepository dataProvider = VoteRemoteRepository();
+  VoteRemoteRepository dataProvider;
   final List<Vote> _loadedVotes = [];
 
-  VoteBloc(super.initialState) {
+  VoteBloc(super.initialState, {required this.dataProvider}) {
     on<GetVotes>((final event, final emit) async {
       if (event.pageNumber == 0) {
         _loadedVotes.clear();
