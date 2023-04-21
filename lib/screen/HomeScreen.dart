@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.check),
             ),
             BottomNavigationBarItem(
-              label: 'Poslance',
+              label: 'Poslanci',
               icon: Icon(Icons.man),
             ),
             BottomNavigationBarItem(

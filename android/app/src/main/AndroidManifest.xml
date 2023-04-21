@@ -2,7 +2,7 @@
     package="cz.my.snemovna">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="snemovna"
+        android:label="MySněmovna"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
